@@ -1,0 +1,20 @@
+[project]
+name = "chippymu"
+version = "0.2.2"
+description = "一个用numpy实现的8bit音乐生成器"
+readme = "README.md"
+authors = [
+    { name = "wolido", email = "270262953@qq.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "numpy>=2.3.0",
+    "sounddevice>=0.5.2",
+]
+
+[project.scripts]
+chippymu = "chippymu:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
