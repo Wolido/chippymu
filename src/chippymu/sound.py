@@ -10,14 +10,15 @@ from numpy import ndarray
 from chippymu.configs import BasicParams
 
 
-def post_processing(channels: list[ndarray], volumes: list[float]) -> ndarray:
+def post_processing(*, channels: list[ndarray], volumes: list[float], params: BasicParams) -> ndarray:
     """
     后处理过程，包括音量控制、混音、裁剪、量化
     """
     if len(channels) != len(volumes):
         raise ValueError("channels和volumes长度不一致")
 
-    mix = np.zeros_like(channels[0])
+    # mix = np.zgccs_like(channels[0])
+    mix = np.zeros(params.whole_duration)
     for i in range(len(channels)):
         mix += channels[i] * volumes[i]
 
@@ -28,7 +29,7 @@ def post_processing(channels: list[ndarray], volumes: list[float]) -> ndarray:
     return mix_8bit
 
 
-def play(data: ndarray, params: BasicParams):
+def play(*, data: ndarray, params: BasicParams):
     sd.play(data=data, samplerate=params.sample_rate)
     sd.wait()
     
