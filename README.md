@@ -28,7 +28,7 @@ from chippymu.sound import post_processing, play
 
 params = BasicParams(sample_rate=16000, bpm=90, length=4)
 
-melody = [(0, Note.C1, 1), (2, Note.E1, 1), (3, Note.G1, 1)]
+melody = [(0.0, Note.C1, 1.0), (2.0, Note.E1, 1.0), (3.0, Note.G1, 1.0)]
 wave = generate_wave(melody=melody, wave_type=WaveType.SINE, params=params)
 mixed = post_processing([wave], volumes=[0.8])
 play(mixed, params)
@@ -41,7 +41,9 @@ from chippymu.models import DrumType
 from chippymu.channelgen import generate_drums
 from chippymu.sound import post_processing, play
 
-drums = [(0, DrumType.KICK, 1), (1, DrumType.HIHAT, 0.5), (2, DrumType.SNARE, 1)]
+params = BasicParams(sample_rate=16000, bpm=90, length=4)
+
+drums = [(0.0, DrumType.KICK, 0.1), (1.0, DrumType.HIHAT, 0.2), (2.0, DrumType.SNARE, 0.2)]
 drum_audio = generate_drums(drums=drums, params=params)
 mixed = post_processing([drum_audio], volumes=[0.8])
 play(mixed, params)
@@ -76,3 +78,10 @@ play(mixed, params)
 
     - `post_processing`: 混音、裁剪、量化等。
     - `play`: 使用`sounddevice`播放音频。
+
+### 更新记录
+
+#### 0.3.0
+
+- 将noice从波形移动至鼓声，保持一致的创建方式。
+- 更新README.md以符合类型标注。
