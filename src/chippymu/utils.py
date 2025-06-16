@@ -58,8 +58,9 @@ def basic_wave_gen(
             return amplitude * np.where(phase < 0.5, -1 + 4 * phase, 3 - 4 * phase)
         case WaveType.SAWTOOTH:
             return amplitude * (2 * phase - 1)
-        case WaveType.NOISE:
-            return amplitude * (2 * np.random.rand(len(t)) - 1)
+        # 将噪声移至鼓
+        # case WaveType.NOISE:
+        #     return amplitude * (2 * np.random.rand(len(t)) - 1)
         case _:
             raise ValueError("未知波形类型")
 
@@ -128,6 +129,24 @@ def generate_hihat(
     return amplitude * envelope * noise
 
 
+def generate_noice(
+    *, duration: float, amplitude: float = 1.0, sample_rate: int = 16000
+) -> ndarray:
+    """
+    生成噪声，用于生成鼓声。
+
+    - 参数：
+        - duration: 持续时间，单位秒
+        - amplitude: 振幅，范围0~1
+        - sample_rate: 采样率，默认16000
+
+    - 返回：
+        - 噪声，ndarray
+    """
+    t: ndarray = np.linspace(0, duration, int(sample_rate * duration), endpoint=False)
+    return amplitude * (2 * np.random.rand(len(t)) - 1)
+
+
 def basic_drum_gen(
     *,
     drum_type: DrumType,
@@ -162,6 +181,10 @@ def basic_drum_gen(
             )
         case DrumType.HIHAT:
             return generate_hihat(
+                duration=duration, amplitude=amplitude, sample_rate=sample_rate
+            )
+        case DrumType.NOICE:
+            return generate_noice(
                 duration=duration, amplitude=amplitude, sample_rate=sample_rate
             )
         case _:

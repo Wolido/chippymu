@@ -14,7 +14,8 @@ class WaveType(str, Enum):
     SQUARE = "square"
     TRIANGLE = "triangle"
     SAWTOOTH = "sawtooth"
-    NOISE = "noise"
+    # 移至鼓
+    # NOISE = "noise"
 
 
 class DrumType(str, Enum):
@@ -25,6 +26,7 @@ class DrumType(str, Enum):
     KICK = "kick"
     SNARE = "snare"
     HIHAT = "hihat"
+    NOICE = "noice"
 
 
 class Note(int, Enum):
