@@ -1,6 +1,6 @@
 [project]
 name = "chippymu"
-version = "0.3.0"
+version = "0.3.1"
 description = "一个用numpy实现的8bit音乐生成器"
 readme = "README.md"
 authors = [
