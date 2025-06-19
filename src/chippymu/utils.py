@@ -3,9 +3,9 @@
 """
 
 import numpy as np
+from numpy import ndarray
 
 from chippymu.models import DrumType, WaveType
-from numpy import ndarray
 
 
 def note_to_freq(*, note: int) -> float:
@@ -58,9 +58,6 @@ def basic_wave_gen(
             return amplitude * np.where(phase < 0.5, -1 + 4 * phase, 3 - 4 * phase)
         case WaveType.SAWTOOTH:
             return amplitude * (2 * phase - 1)
-        # 将噪声移至鼓
-        # case WaveType.NOISE:
-        #     return amplitude * (2 * np.random.rand(len(t)) - 1)
         case _:
             raise ValueError("未知波形类型")
 
@@ -150,7 +147,6 @@ def generate_noice(
 def basic_drum_gen(
     *,
     drum_type: DrumType,
-    frequency: int = 50,
     duration: float,
     amplitude: float = 1.0,
     sample_rate: int = 16000,
