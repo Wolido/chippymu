@@ -46,7 +46,7 @@ class Note(int, Enum):
     A0 = 57
     A0_SHARP = 58
     B0 = 59
-    
+
     C1 = 60
     C1_SHARP = 61
     D1 = 62
@@ -98,3 +98,40 @@ class Note(int, Enum):
     A4 = 105
     A4_SHARP = 106
     B4 = 107
+
+
+class Melody(list):
+    """
+    音阶类，用于生成音阶和音阶操作
+    """
+
+    def __init__(
+        self,
+        *,
+        basic_melody: list[tuple[float, int | Note | DrumType, float]] | None = None,
+    ):
+        """
+        类初始化
+
+        参数：
+            - basic_melody: 基础音阶
+        """
+        init_melody: list[tuple[float, int | Note | DrumType, float]] = []
+        if basic_melody is not None:
+            init_melody = basic_melody
+
+        super().__init__(init_melody)
+
+    def apm(
+        self, mel: list[tuple[float, int | Note | DrumType, float]], start_time: float
+    ):
+        """
+        添加音阶
+
+        参数：
+            - mel: 音阶
+            - start_time: 音阶开始时间
+        """
+        for time, note, dur in mel:
+            self.append([time + start_time, note, dur])
+        return self
