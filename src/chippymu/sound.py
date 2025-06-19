@@ -17,7 +17,6 @@ def post_processing(*, channels: list[ndarray], volumes: list[float], params: Ba
     if len(channels) != len(volumes):
         raise ValueError("channels和volumes长度不一致")
 
-    # mix = np.zgccs_like(channels[0])
     mix = np.zeros(params.whole_duration)
     for i in range(len(channels)):
         mix += channels[i] * volumes[i]
