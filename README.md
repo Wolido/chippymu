@@ -1,3 +1,5 @@
+from numpy import ndarray
+
 ## 一个用numpy实现的8bit音乐生成器
 
 ### 功能特性
@@ -21,32 +23,48 @@ pip install chippymu
 #### 播放一段旋律
 
 ```python
-from chippymu.models import Note, WaveType
+from chippymu.models import Note, WaveType, Melody
 from chippymu.configs import BasicParams
 from chippymu.channelgen import generate_wave
 from chippymu.sound import post_processing, play
 
+from numpy import ndarray
+
 params = BasicParams(sample_rate=16000, bpm=90, length=4)
 
-melody = [(0.0, Note.C1, 1.0), (2.0, Note.E1, 1.0), (3.0, Note.G1, 1.0)]
-wave = generate_wave(melody=melody, wave_type=WaveType.SINE, params=params)
-mixed = post_processing([wave], volumes=[0.8])
-play(mixed, params)
+melody = Melody()
+basic_melody: list[tuple[float, Note, float]] = [(0.0, Note.C1, 1.0), (2.0, Note.E1, 1.0), (3.0, Note.G1, 1.0)]
+melody.apm(basic_melody, 0.0)
+
+wave: ndarray = generate_wave(melody=melody, wave_type=WaveType.SINE, params=params)
+
+channels: list[ndarray] = [wave,]
+volumes: list[float] = [0.8,]
+mixed: ndarray = post_processing(channels=channels, volumes=volumes, params=params)
+
+play(data=mixed, params=params)
 ```
 
 #### 播放一段鼓点
 
 ```python
 from chippymu.models import DrumType
+from chippymu.configs import BasicParams
 from chippymu.channelgen import generate_drums
 from chippymu.sound import post_processing, play
 
+from numpy import ndarray
+
 params = BasicParams(sample_rate=16000, bpm=90, length=4)
 
-drums = [(0.0, DrumType.KICK, 0.1), (1.0, DrumType.HIHAT, 0.2), (2.0, DrumType.SNARE, 0.2)]
-drum_audio = generate_drums(drums=drums, params=params)
-mixed = post_processing([drum_audio], volumes=[0.8])
-play(mixed, params)
+drums: list[tuple[float, DrumType, float]] = [(0.0, DrumType.KICK, 0.1), (1.0, DrumType.HIHAT, 0.2), (2.0, DrumType.SNARE, 0.2)]
+drum_audio: ndarray = generate_drums(drums=drums, params=params)
+
+channels: list[ndarray] = [drum_audio,]
+volumes: list[float] = [0.8,]
+
+mixed = post_processing(channels=channels, volumes=volumes)
+play(data=mixed, params=params)
 ```
 
 ### 核心模块说明
@@ -94,3 +112,7 @@ play(mixed, params)
 
 - 修改了混音基准长度的计算方法。
 - 将sound模块的函数改为不能传位置参数
+
+#### 0.4.0
+
+- 增加了Melody类，用于按开始位置拼接短音片段。
